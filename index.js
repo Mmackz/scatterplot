@@ -29,21 +29,41 @@ d3.json(
    console.log(data);
 
    // Race Times (y-axis)
-   const timeFormat = "%M:%S"
-   const parsedTime = data.map(data => d3.timeParse(timeFormat)(data.Time))
-   const yAxisScale = d3
-      .scaleTime()
-      .domain(d3.extent(parsedTime))
-      .range([0, height]);
+   const timeFormat = "%M:%S";
+   const parsedTime = data.map((data) => d3.timeParse(timeFormat)(data.Time));
+   const yAxisScale = d3.scaleTime().domain(d3.extent(parsedTime)).range([0, height]);
+   console.log(yAxisScale(d3.timeParse(timeFormat)("39:23")))
+   const yAxis = d3.axisLeft(yAxisScale).tickFormat((d) => d3.timeFormat(timeFormat)(d));
 
-   const yAxis = d3.axisLeft(yAxisScale).tickFormat(d => d3.timeFormat(timeFormat)(d));
-
-   chart.append("g").call(yAxis).attr("id", "x-axis").attr("transform", `translate(60, 20)`);
+   chart
+      .append("g")
+      .call(yAxis)
+      .attr("id", "y-axis")
+      .attr("transform", `translate(60, 20)`);
 
    // Years (x-axis)
-   const maxYear = d3.max(data, d => d.Year + 1);
-   const minYear = d3.min(data, d => d.Year - 1);
+   const maxYear = d3.max(data, (d) => d.Year + 1);
+   const minYear = d3.min(data, (d) => d.Year - 1);
    const xAxisScale = d3.scaleLinear().domain([minYear, maxYear]).range([0, width]);
-   const xAxis = d3.axisBottom(xAxisScale).tickFormat(d => d3.timeParse(d))
-   chart.append("g").call(xAxis).attr("id", "y-axis").attr("transform", `translate(${paddingY}, ${height + 20})`)
+   console.log(xAxisScale("2015"))
+   const xAxis = d3.axisBottom(xAxisScale).tickFormat((d) => d3.timeParse(d));
+   chart
+      .append("g")
+      .call(xAxis)
+      .attr("id", "x-axis")
+      .attr("transform", `translate(${paddingY}, ${height + 20})`);
+
+   // Data points
+   
+   d3.select("svg")
+      .selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("class", "dot")
+      .attr("cx", d => xAxisScale(d.Year) + 60)
+      .attr("data-xvalue", d => d.Year)
+      .attr("data-yvalue", d => d3.timeParse(timeFormat)(d.Time))
+      .attr("cy", d => yAxisScale(d3.timeParse(timeFormat)(d.Time)) + 20)
+      .attr("r", 5)
 });
