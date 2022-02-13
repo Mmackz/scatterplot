@@ -1,10 +1,18 @@
-const height = 400;
+console.log(flags);
+
+// add div for tooltip
+d3.select(".chart-outer")
+   .insert("div", ":first-child")
+   .attr("id", "tooltip")
+   .attr("class", "tooltip")
+   .attr("opacity", "0");
+
+// setup chart
+const height = 380;
 const width = 800;
 const paddingY = 60;
 const paddingX = 100;
-
 const color = d3.scaleOrdinal(d3.schemeSet2);
-
 const chartContainer = d3.select(".chart");
 
 chartContainer
@@ -28,7 +36,7 @@ const chart = chartContainer
 d3.json(
    "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json"
 ).then((data) => {
-   // console.log(data);
+   console.log(new Set(data.map((x) => x.Nationality).sort()));
 
    // Race Times (y-axis)
    const timeFormat = "%M:%S";
@@ -40,11 +48,36 @@ d3.json(
       .append("g")
       .call(yAxis)
       .attr("id", "y-axis")
-      .attr("transform", `translate(60, 20)`)
+      .attr("transform", `translate(60, 20)`);
 
-   chart.append("text").attr("class", "y-label").attr("transform", "rotate(-90)").attr("x", -286).attr("y", 80).text("faster times")
-   chart.append("line").attr("x1", 75).attr("x2", 75).attr("y1", 183).attr("y2", 130).attr("stroke", "black").attr("stroke-width", 1.2)
-   chart.append("path").attr("d", d3.symbol().type(d3.symbolTriangle)).attr("transform", "translate(75, 128)").attr("fill", "#6f9df1").attr("stroke", "black");
+   chart
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -270)
+      .attr("y", 20)
+      .text("Time in minutes");
+
+   chart
+      .append("text")
+      .attr("class", "y-label")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -286)
+      .attr("y", 80)
+      .text("faster times");
+   chart
+      .append("line")
+      .attr("x1", 75)
+      .attr("x2", 75)
+      .attr("y1", 189)
+      .attr("y2", 130)
+      .attr("stroke", "black")
+      .attr("stroke-width", 1.2);
+   chart
+      .append("path")
+      .attr("d", d3.symbol().type(d3.symbolTriangle))
+      .attr("transform", "translate(75, 128)")
+      .attr("fill", "#6f9df1")
+      .attr("stroke", "black");
 
    // Years (x-axis)
    const maxYear = d3.max(data, (d) => d.Year + 1);
@@ -58,7 +91,6 @@ d3.json(
       .attr("transform", `translate(${paddingY}, ${height + 20})`);
 
    // Data points
-
    d3.select("svg")
       .selectAll("circle")
       .data(data)
@@ -69,8 +101,25 @@ d3.json(
       .attr("data-xvalue", (d) => d.Year)
       .attr("data-yvalue", (d) => d3.timeParse(timeFormat)(d.Time))
       .attr("cy", (d) => yAxisScale(d3.timeParse(timeFormat)(d.Time)) + 20)
-      .attr("r", 6)
-      .attr("fill", (d) => color(Boolean(d.Doping)));
+      .attr("r", 8)
+      .attr("fill", (d) => color(Boolean(d.Doping)))
+      .on("mouseenter", (event, data) => {
+         console.log(data);
+         d3
+            .select("#tooltip")
+            .attr("data-year", data.Year)
+            .style("opacity", "0.9")
+            .style("left", `${xAxisScale(data.Year) + 100}px`)
+            .style("top", `${yAxisScale(d3.timeParse(timeFormat)(data.Time)) + 92}px`)
+            .html(`
+               <p class="tt-text">${data.Name}<span class="tt-country">${
+            flags[data.Nationality]
+         }</span></p>
+            `);
+      })
+      .on("mouseout", () => {
+         d3.select("#tooltip").style("opacity", "0");
+      });
 
    const legend = chart
       .append("g")

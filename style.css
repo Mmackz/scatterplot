@@ -1,3 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@400;700&display=swap');
+
+body {
+   margin: 0;
+   font-family: 'Fira Sans Condensed', sans-serif;
+}
+
+svg {
+   overflow: visible;
+}
+
+.main-container {
+   height: 100vh;
+   display: flex;
+   align-items: center;
+   background: rgb(187, 187, 187);
+}
+
+.chart-outer {
+   position: relative;
+   width: fit-content;
+   margin: 0 auto;
+   padding: 1.5rem;
+   border-radius: 10px;
+   background: #fff;
+   box-shadow: 3px 3px 20px rgba(31, 29, 29, 0.753);
+}
+
+.title-container {
+   text-align: center;
+}
+
+.title {
+   margin: 0;
+}
+
+.sub-title {
+   margin: 0.25rem;
+}
+
 .dot {
    stroke: black;
    stroke-width: 1;
@@ -14,3 +54,13 @@
    stroke: black;
    stroke-width: 0.5;
 }
+
+.tooltip {
+   position: absolute;
+   background: #ddd;
+   width: max-content;
+}
+
+.tt-country {
+   margin-left: 0.35rem;
+} 
