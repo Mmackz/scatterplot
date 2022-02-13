@@ -1,5 +1,3 @@
-console.log(flags);
-
 // add div for tooltip
 d3.select(".chart-outer")
    .insert("div", ":first-child")
@@ -36,8 +34,6 @@ const chart = chartContainer
 d3.json(
    "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json"
 ).then((data) => {
-   console.log(new Set(data.map((x) => x.Nationality).sort()));
-
    // Race Times (y-axis)
    const timeFormat = "%M:%S";
    const parsedTime = data.map((data) => d3.timeParse(timeFormat)(data.Time));
@@ -104,7 +100,6 @@ d3.json(
       .attr("r", 8)
       .attr("fill", (d) => color(Boolean(d.Doping)))
       .on("mouseenter", (event, data) => {
-         console.log(data);
          d3
             .select("#tooltip")
             .attr("data-year", data.Year)
@@ -126,12 +121,15 @@ d3.json(
                   <span class="tt-label">TIME:</span>
                   ${data.Time}
                </p>
-               ${data.Doping && `
+               ${
+                  data.Doping &&
+                  `
                   <p class="tt-text">
                      <span class="tt-label">ALLEGATION:</span>
                      ${data.Doping}
                   </p>
-               `}
+               `
+               }
             `);
       })
       .on("mouseout", () => {
