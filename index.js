@@ -109,16 +109,33 @@ d3.json(
             .select("#tooltip")
             .attr("data-year", data.Year)
             .style("opacity", "0.9")
+            .style("z-index", "1")
             .style("left", `${xAxisScale(data.Year) + 100}px`)
             .style("top", `${yAxisScale(d3.timeParse(timeFormat)(data.Time)) + 92}px`)
             .html(`
-               <p class="tt-text">${data.Name}<span class="tt-country">${
-            flags[data.Nationality]
-         }</span></p>
+               <p class="tt-text">
+                  <span class="tt-label">NAME:</span>
+                  ${data.Name}
+                  <span class="tt-country">${flags[data.Nationality]}</span>
+               </p>
+               <p class="tt-text">
+                  <span class="tt-label">YEAR:</span>
+                  ${data.Year}
+               </p>
+               <p class="tt-text">
+                  <span class="tt-label">TIME:</span>
+                  ${data.Time}
+               </p>
+               ${data.Doping && `
+                  <p class="tt-text">
+                     <span class="tt-label">ALLEGATION:</span>
+                     ${data.Doping}
+                  </p>
+               `}
             `);
       })
       .on("mouseout", () => {
-         d3.select("#tooltip").style("opacity", "0");
+         d3.select("#tooltip").style("opacity", "0").style("z-index", "-1");
       });
 
    const legend = chart

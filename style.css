@@ -59,8 +59,23 @@ svg {
    position: absolute;
    background: #ddd;
    width: max-content;
+   max-width: 280px;
+   padding: 1rem;
+   border-radius: 8px;
+}
+
+.tt-text {
+   margin: 0;
 }
 
 .tt-country {
-   margin-left: 0.35rem;
-} 
+   margin-left: 0.1rem;
+}
+
+.tt-label {
+   font-size: 0.7rem;
+   font-weight: bold;
+   letter-spacing: -0.2px;
+   margin-right: 0.25rem;
+   
+}
