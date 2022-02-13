@@ -1,0 +1,9 @@
+.dot {
+   stroke: black;
+   stroke-width: 1;
+}
+
+.label-text {
+   font-size: 0.75rem;
+   text-anchor: end;
+}
