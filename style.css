@@ -7,3 +7,10 @@
    font-size: 0.75rem;
    text-anchor: end;
 }
+
+.y-label {
+   fill: #6f9df1;
+   font-size: 1.05rem;
+   stroke: black;
+   stroke-width: 0.5;
+}

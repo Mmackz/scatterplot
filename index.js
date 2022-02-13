@@ -40,7 +40,11 @@ d3.json(
       .append("g")
       .call(yAxis)
       .attr("id", "y-axis")
-      .attr("transform", `translate(60, 20)`);
+      .attr("transform", `translate(60, 20)`)
+
+   chart.append("text").attr("class", "y-label").attr("transform", "rotate(-90)").attr("x", -286).attr("y", 80).text("faster times")
+   chart.append("line").attr("x1", 75).attr("x2", 75).attr("y1", 183).attr("y2", 130).attr("stroke", "black").attr("stroke-width", 1.2)
+   chart.append("path").attr("d", d3.symbol().type(d3.symbolTriangle)).attr("transform", "translate(75, 128)").attr("fill", "#6f9df1").attr("stroke", "black");
 
    // Years (x-axis)
    const maxYear = d3.max(data, (d) => d.Year + 1);
@@ -68,11 +72,11 @@ d3.json(
       .attr("r", 6)
       .attr("fill", (d) => color(Boolean(d.Doping)));
 
-   const legendContainer = chart.append("g").attr("id", "legend");
-
-   const legend = legendContainer
-      .selectAll("#legend")
-      .data(color.domain())
+   const legend = chart
+      .append("g")
+      .attr("id", "legend")
+      .selectAll("g")
+      .data([true, false])
       .enter()
       .append("g")
       .attr("transform", (d, i) => `translate(0, ${height / 2 - i * 20})`);
@@ -90,5 +94,5 @@ d3.json(
       .attr("class", "label-text")
       .attr("x", width - 6)
       .attr("y", 12)
-      .text((d) => `${d ? "No" : "Riders with"} doping allegations`);
+      .text((d) => `${d ? "Riders with" : "No"} doping allegations`);
 });
