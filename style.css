@@ -62,6 +62,7 @@ svg {
    max-width: 280px;
    padding: 1rem;
    border-radius: 8px;
+   opacity: 0;
 }
 
 .tt-text {
