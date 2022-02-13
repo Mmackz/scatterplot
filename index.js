@@ -5,7 +5,7 @@ d3.select(".chart-outer")
    .insert("div", ":first-child")
    .attr("id", "tooltip")
    .attr("class", "tooltip")
-   .attr("opacity", "0");
+   .style("opacity", "0");
 
 // setup chart
 const height = 380;
